@@ -51,7 +51,4 @@ public interface GoodsDetailMapper {
      * @return 商品明细集合
      */
 	List<GoodsDetailVo> findByNameLikeAndAddressLike(@Param("likeName")String likeName,@Param("likeAddress")String likeAddress);
-
-
-
 }
