@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.mapper.GoodsDetailMapper">
+  <resultMap id="BaseResultMap" type="com.exam.entity.GoodsDetail">
+    <!--@mbg.generated-->
+    <!--@Table goods_detail-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sortId" jdbcType="BIGINT" property="sortId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="createDate" jdbcType="DATE" property="createDate" />
+    <result column="remaining" jdbcType="INTEGER" property="remaining" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, sortId, `name`, address, price, createDate, remaining
+  </sql>
+</mapper>
