@@ -1,5 +1,6 @@
 package com.exam.service;
 
+import com.exam.entity.GoodsDetail;
 import com.exam.exception.MyException;
 import com.exam.vo.GoodsDetailVo;
 
@@ -32,4 +33,25 @@ public interface GoodsDetailService {
      * @param id 商品id
      */
     void delDetailById(Long id) throws MyException;
+
+    /**
+     * 根据商品id 查询 商品信息
+     * @param id 商品id
+     * @return 商品信息
+     */
+    GoodsDetailVo getById(Long id);
+
+    /**
+     * 购买商品
+     * @param id 商品id
+     * @param buyNum 购买数量
+     * @throws MyException 购买失败
+     */
+    void buyDetail(Long id,Integer buyNum) throws MyException;
+
+    /**
+     * 添加商品
+     * @param detail 商品
+     */
+    void addDetail(GoodsDetail detail) throws MyException;
 }

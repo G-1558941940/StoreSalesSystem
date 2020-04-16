@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购买</title>
+    <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/template-web.js"></script>
+    <style>
+        #box {
+            width: 270px;
+            margin: 0 auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <table border="1" cellspacing="1">
+        <tr>
+            <td colspan="2" style="height: 100px;font-size: 32px;color: #1600C1">购买商品</td>
+        </tr>
+        <tr>
+            <td>
+                商品编号
+            </td>
+            <td>
+                <span id="id"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                商品名称
+            </td>
+            <td>
+                <span id="name"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                商品分类
+            </td>
+            <td>
+                <span id="sortName"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                单价（元）
+            </td>
+            <td>
+                <span id="price"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                剩余数量
+            </td>
+            <td>
+                <span id="remaining"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="buyNum">
+                    购买数量
+                </label>
+            </td>
+            <td>
+                <input type="text" name="buyNum" id="buyNum">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                总金额
+            </td>
+            <td>
+                <span id="sum"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button id="buy">购买</button>
+                <button onclick="history.back()">返回</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+    $(function () {
+        function GetQueryValue(queryName) {
+            let query = decodeURI(window.location.search.substring(1));
+            let vars = query.split("&");
+            for (let i = 0; i < vars.length; i++) {
+                let pair = vars[i].split("=");
+                if (pair[0] == queryName) {
+                    return pair[1];
+                }
+            }
+            return null;
+        }
+
+        let id = GetQueryValue('id');
+        $.getJSON("/detailById", {id: id}, function (res) {
+            $("#id").html(res.id);
+            $("#name").html(res.name);
+            $("#sortName").html(res.sortName);
+            $("#price").html(res.price);
+            $("#remaining").html(res.remaining);
+        });
+        $("#buyNum").blur(function () {
+            let buyNumVal = $(this).val();
+            let remaining = $("#remaining").html();
+            let r = /^\+?[0-9][0-9]*$/;
+            if (r.test(buyNumVal)) {
+                if (parseInt(buyNumVal) > parseInt(remaining)) {
+                    alert("数量不足");
+                    return;
+                }
+                let price = $("#price").html();
+                let sum = parseInt(buyNumVal) * parseFloat(price);
+                $("#sum").html(sum);
+            } else {
+                $(this).val(0);
+                alert("购买的数量必须为整数");
+            }
+        });
+        $("#buy").click(function () {
+            let idVal = $("#id").html();
+            let buyNumVal = $("#buyNum").val();
+            let remaining = $("#remaining").html();
+            if (buyNumVal.trim().length < 0) {
+                alert("购买数量不能为空");
+                return;
+            } else if (buyNumVal.trim() == 0) {
+                alert("购买的数量必须大于0");
+                return;
+            } else if (parseInt(buyNumVal) > parseInt(remaining)) {
+                alert("数量不足");
+                return;
+            } else {
+                let r = /^\+?[0-9][0-9]*$/;
+                if (!r.test(buyNumVal)) {
+                    $(this).val(0);
+                    alert("购买的数量必须为整数");
+                    return;
+                }
+            }
+            $.post("/buyDetail", {id: idVal, buyNum: buyNumVal}, function (res) {
+                if (res.state === 0) {
+                    location.href = "/index?msg=1";
+                } else {
+                    location.href = "/index?msg=0";
+                }
+            }, "json")
+        })
+    })
+</script>
+</body>
+</html>

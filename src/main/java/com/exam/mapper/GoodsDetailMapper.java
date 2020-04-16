@@ -12,15 +12,17 @@ public interface GoodsDetailMapper {
      * @param id 商品id
      * @return 商品明细
      */
-    GoodsDetail findById(@Param("id")Long id);
+    GoodsDetailVo findById(@Param("id")Long id);
 
     /**
-     * 根据商品id修改商品信息
-     * @param updated 商品明细
+     * 根据商品id修改商品库存数量
+     * @param buyNum 购买数量
      * @param id 商品id
      * @return 影响行数
      */
-    int updateById(@Param("updated")GoodsDetail updated,@Param("id")Long id);
+    int updateRemainingById(@Param("buyNum")Integer buyNum,@Param("id")Long id);
+
+
 
     /**
      * 添加商品

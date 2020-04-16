@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+    <script src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/template-web.js"></script>
+    <style>
+        #box {
+            width: 270px;
+            margin: 0 auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <form id="form1">
+        <table border="1" cellspacing="1">
+            <tr>
+                <td colspan="2" style="height: 100px;font-size: 32px;color: #1600C1">购买商品</td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="name">商品名称</label>
+                </td>
+                <td>
+                    <input type="text" name="name" id="name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="address">产地</label>
+                </td>
+                <td>
+                    <input type="text" name="address" id="address">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    商品分类
+                </td>
+                <td>
+                    <select name="sortId" id="sort">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="price">单价（元）</label>
+                </td>
+                <td>
+                    <input type="text" name="price" id="price">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="remaining">剩余数量</label>
+                </td>
+                <td>
+                    <input type="text" name="remaining" id="remaining">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <button type="button" id="addDetail">添加</button>
+                    <button type="button" onclick="location.href='/index'">返回</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/html" id="sortsTemp">
+    <option value="-1" selected>请选择</option>
+    {{each sorts sort}}
+    <option value="{{sort.id}}">{{sort.name}}</option>
+    {{/each}}
+</script>
+<script>
+    $(function () {
+        $.getJSON("/getSortList", function (res) {
+            let html = template("sortsTemp", {"sorts": res});
+            $("#sort").html(html);
+        });
+        $("#addDetail").click(function () {
+            if (check()) {
+                $.post("/addDetail", $('#form1').serialize(), function (res) {
+                    alert(res.messages);
+                })
+            }
+        });
+
+        function check() {
+            let name = $("#name").val();
+            let address = $("#address").val();
+            let sort = $("#sort").val();
+            let price = $("#price").val();
+            let remaining = $("#remaining").val();
+
+            if (name.trim().length <= 0) {
+                alert("商品名称不能为空");
+                return false;
+            }
+            if (address.trim().length <= 0) {
+                alert("产地不能为空");
+                return false;
+            }
+            if (sort == -1) {
+                alert("请选择分类");
+                return false;
+            }
+            if (price.trim().length <= 0) {
+                alert("单价不能为空");
+                return false;
+            } else {
+                let r = /^[1-9][0-9]*([.][0-9]{1,2})?$/;
+                if (!r.test(price)) {
+                    alert("单价格式不正确");
+                    return false;
+                }
+            }
+
+            if (remaining.trim().length <= 0) {
+                alert("剩余数量不能为空");
+                return false;
+            } else {
+                let r = /^\+?[0-9][0-9]*$/;
+                if (!r.test(remaining)) {
+                    alert("剩余数量格式不正确");
+                    return false;
+                }
+            }
+            return true;
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.exam.service.impl;
 
+import com.exam.entity.GoodsDetail;
 import com.exam.exception.MyException;
 import com.exam.mapper.GoodsDetailMapper;
 import com.exam.service.GoodsDetailService;
@@ -41,6 +42,31 @@ public class GoodsDetailServiceImpl implements GoodsDetailService {
             goodsDetailMapper.deleteById(id);
         } catch (Exception e) {
             throw new MyException("删除失败！");
+        }
+    }
+
+    @Override
+    public GoodsDetailVo getById(Long id) {
+        return goodsDetailMapper.findById(id);
+    }
+
+    @Override
+    public void buyDetail(Long id, Integer buyNum) throws MyException {
+        try {
+            goodsDetailMapper.updateRemainingById(buyNum,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MyException("修改失败");
+        }
+    }
+
+    @Override
+    public void addDetail(GoodsDetail detail) throws MyException {
+        try {
+            goodsDetailMapper.insertSelective(detail);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MyException("新增失败");
         }
     }
 }
