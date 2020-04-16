@@ -1,45 +1,48 @@
 package com.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
-    * 商品明细表
-    */
+ * 商品明细表
+ */
 public class GoodsDetail {
     /**
-    * 编号
-    */
+     * 编号
+     */
     private Long id;
 
     /**
-    * 分类编号
-    */
+     * 分类编号
+     */
     private Long sortId;
 
     /**
-    * 商品名称
-    */
+     * 商品名称
+     */
     private String name;
 
     /**
-    * 产地名称
-    */
+     * 产地名称
+     */
     private String address;
 
     /**
-    * 单价
-    */
+     * 单价
+     */
     private BigDecimal price;
 
     /**
-    * 生产日期
-    */
+     * 生产日期
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date createDate;
 
     /**
-    * 剩余数量
-    */
+     * 剩余数量
+     */
     private Integer remaining;
 
     public Long getId() {

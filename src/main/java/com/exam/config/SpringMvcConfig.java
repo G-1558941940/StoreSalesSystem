@@ -2,16 +2,15 @@ package com.exam.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @ComponentScan("com.exam.controller")
 @EnableWebMvc
 public class SpringMvcConfig implements WebMvcConfigurer {
+
+
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -31,5 +30,10 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/imgs/**")
                 .addResourceLocations("/imgs/");
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/index").setViewName("index");
     }
 }
